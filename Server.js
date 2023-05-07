@@ -7,13 +7,18 @@ const resultRouter = require('./src/routes/resultRouter')
 const app = express()
 var bodyParser = require('body-parser')
 const notificationRouter = require('./src/routes/notificationRouter')
-const registerRouter = require('./src/routes/registerRouter')
+const RegisterRouter = require('./src/routes/api/RegisterRouter')
+const signinRouter = require('./src/routes/api/signinRouter')
+
+
+
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static('./public'))
 app.set('view engine', 'ejs')
 app.set('views', './src/views')
 
-app.use('/register',registerRouter)
+
 
 app.use('/student',studentRouter)
 app.use('/company',companyRouter)  
@@ -36,8 +41,32 @@ app.get('/',(req,res)=>{
 })
 
 
+app.use(express.static('./public'))
+app.set('view engine','ejs')
+app.set('views','./src/views')
+app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser())
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    res.setHeader( 
+      "Access-Control-Allow-Methods",
+      "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+    );
+    next();
+  });
+
+app.use('/api/register/',RegisterRouter)
+app.use('/api/login/',signinRouter)
+
+
+
+
 const MONGODB_URL=
-"mongodb+srv://anshajmaitexa:1234@cluster0.lmqsqvs.mongodb.net/CRS_db?retryWrites=true&w=majority"
+"mongodb+srv://anshajmaitexa:1234@cluster0.9lfualx.mongodb.net/CRS_db?retryWrites=true&w=majority"
 
 
 const port=2000;

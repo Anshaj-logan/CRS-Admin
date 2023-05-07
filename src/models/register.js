@@ -5,15 +5,14 @@ const schema=mongoose.Schema
 const registerSchema=new schema({
     name :{type:String}, 
     department:{type:String},
-    year:{type:String},
-    Email:{type:String},
-    Contact:{type:String},
-    SSLC_Score:{type:String},
-    PLusTwo_Score:{type:String},
-    Degree_Percentage:{type:String},
-    NumberofBacklogs:{type:String},
-    CV:{type:String},
-    Action:{type:String}, 
+    login_id:{type:mongoose.Types.ObjectId,ref:"login_tb"},
+    email:{type:String},
+    contact:{type:String},
+    sslc_score:{type:String},
+    plustwo_score:{type:String},
+    degree_score:{type:String},
+    backlogs:{type:String},
+    
 
 })
 const registermodel=mongoose.model('register_tb',registerSchema)
