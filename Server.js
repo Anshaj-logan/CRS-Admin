@@ -9,6 +9,8 @@ var bodyParser = require('body-parser')
 const notificationRouter = require('./src/routes/notificationRouter')
 const RegisterRouter = require('./src/routes/api/RegisterRouter')
 const signinRouter = require('./src/routes/api/signinRouter')
+const StudentRouter = require('./src/routes/api/studentRouter')
+const CompanyRouter = require('./src/routes/api/CompanyRouter')
 
 
 
@@ -61,6 +63,8 @@ app.use((req, res, next) => {
 
 app.use('/api/register/',RegisterRouter)
 app.use('/api/login/',signinRouter)
+app.use('/api/student/',StudentRouter)
+app.use('/api/company/',CompanyRouter)
 
 
 

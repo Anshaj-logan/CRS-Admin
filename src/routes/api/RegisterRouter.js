@@ -1,6 +1,6 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
-const loginData = require('../../models/login')
+
 
 
 const login = require('../../models/login')
