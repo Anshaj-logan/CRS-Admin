@@ -39,6 +39,9 @@ app.get('/reg', function (req, res) {
   })
   
 app.get('/',(req,res)=>{
+    res.render('login')
+})
+app.get('/dashboard',(req,res)=>{
     res.render('dashboard')
 })
 
@@ -77,7 +80,7 @@ const port=2000;
 
 mongoose.connect(MONGODB_URL).then(()=>{
     app.listen(port,()=>{
-        console.log(`server running on port http://localhost:2000/admin`);
+        console.log(`server running on port http://localhost:2000/`);
     })
 }).catch((error)=>{
     console.log(` ${error} did not connect`); 

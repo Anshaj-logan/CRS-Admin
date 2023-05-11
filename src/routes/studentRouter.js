@@ -5,7 +5,29 @@ const studentRouter = express.Router()
 studentRouter.use(express.static('./public'))
 
 
+studentRouter.post("/admin-login", async (req, res) => {
+  const { username, password } = req.body;
+  console.log(username);
 
+  try {
+    const oldUser = await login.findOne({ username })
+    console.log(oldUser);
+    if (!oldUser) return res.redirect('/')
+    const isPasswordCorrect = await bcrypt.compare(password, oldUser.password)
+    console.log("user", isPasswordCorrect);
+
+    if (!isPasswordCorrect) return res.redirect('/')
+
+    if (oldUser.role === '0') {
+            const admin = await login.findOne({ _id: oldUser._id })
+            if (admin) {
+                return res.redirect('/dashboard')
+            }           
+    }       
+  } catch (error) {
+      return res.status(500).redirect('/')
+  }
+})
 
 studentRouter.get('/view_student',  async function (req, res) {
   const data = await  login.aggregate([

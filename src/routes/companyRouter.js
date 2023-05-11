@@ -28,19 +28,50 @@ companyRouter.get('/company', async function (req, res) {
           "company_name": { "$first": "$data.company_name" },
           "email": { "$first": "$data.email" },
           "phone": { "$first": "$data.contact" },
+          "location": { "$first": "$data.location" },
           "status": { "$first": "$status" },
         }
       }
   
     ])
-      // res.render('mng_cmpny')
-      res.json({data})
+      res.render('mng_cmpny',{data})
+      // res.json({data})
    
   
   } catch (error) {
     
   }
 })
+
+
+companyRouter.get('/delete/:id',  async function (req, res) {
+  const id=req.params.id
+  try {
+    const delete_data=await company.deleteOne({login_id:id})
+    if (delete_data.deletedCount===1)
+    {
+      const delete_data1=await login.deleteOne({_id:id})
+      if(delete_data1.deletedCount===1){
+        res.redirect("/company/company")
+      }
+      
+    }
+  } catch (error) {
+    
+  }
+  
+})
+
+
+companyRouter.get("/approve/:id", async (req, res) => {
+  const id = req.params.id
+  console.log(id);
+  login.updateOne({ _id: id }, { $set: { status: "1" } }).then((details) => {
+      
+      res.redirect('/company/company')
+  })
+
+});
 
 
 

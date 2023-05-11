@@ -1,5 +1,7 @@
 const express = require('express')
 const addntfcnmodel = require('../models/addntfcn')
+const uploadexam = require('../models/UploadExam')
+const interview = require('../models/UploadInterview')
 const notificationRouter = express.Router()
 notificationRouter.use(express.static('./public'))
 
@@ -9,22 +11,44 @@ notificationRouter.use(express.static('./public'))
 notificationRouter.get('/ntfcn', function (req, res) {
     res.render('addntfcn')
   })
-  notificationRouter.get('/vwntfcn',async function (req, res) {
+  notificationRouter.get('/view-exam-notification',async function (req, res) {
     try {
-      const data=await addntfcnmodel.find();
+      const data=await uploadexam.aggregate([
+        {
+          '$lookup': {
+            'from': 'cmpregister_tbs', 
+            'localField': 'login_id', 
+            'foreignField': 'login_id', 
+            'as': 'company'
+          }
+        },
+        {
+            "$unwind":"$company"
+        },
+        {
+            "$group":{
+                "_id":"$_id",
+                "date":{"$first":"$date"},
+                "time":{"$first":"$time"},
+                "link":{"$first":"$link"},
+                "company_name":{"$first":"$company.company_name"},
+            }
+        }
+      ])
       res.render('vwntfcn',{data})
+      // res.json({data})
     } catch (error) {
       
     }
     
   })
-  notificationRouter.get('/delete/:name',  async function (req, res) {
-    const id=req.params.name
+  notificationRouter.get('/view-interview-notification',  async function (req, res) {
+   
     try {
-      const delete_data=await addntfcnmodel.deleteOne({_id:id})
-      if (delete_data.deletedCount==1)
+      const data=await interview.find()
+      if (data)
       {
-        res.redirect("/notfcn/vwntfcn")
+        res.render("viewinterview",{data})
       }
     } catch (error) {
       
