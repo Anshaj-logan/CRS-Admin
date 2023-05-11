@@ -143,5 +143,60 @@ CompanyRouter.post('/upload-interview', async (req, res) => {
 
 })
 
+CompanyRouter.get('/view-exam', (req, res) => {
+    uploadexam.aggregate([
+        {
+          '$lookup': {
+            'from': 'cmpregister_tbs', 
+            'localField': 'login_id', 
+            'foreignField': 'login_id', 
+            'as': 'company'
+          }
+        },
+        {
+            "$unwind":"$company"
+        },
+        {
+            "$group":{
+                "_id":"$_id",
+                "date":{"$first":"$date"},
+                "time":{"$first":"$time"},
+                "link":{"$first":"$link"},
+                "company_name":{"$first":"$company.company_name"},
+            }
+        }
+      ])
+        .then((data) => {
+            res.status(200).json({
+                success: true,
+                error: false,
+                data: data
+            })
+        })
+        .catch(err => {
+            return res.status(401).json({
+                message: "something wrong"
+            })
+        })
+
+})
+
+CompanyRouter.get('/view-interview', (req, res) => {
+    interview.find()
+        .then((data) => {
+            res.status(200).json({
+                success: true,
+                error: false,
+                data: data
+            })
+        })
+        .catch(err => {
+            return res.status(401).json({
+                message: "something wrong"
+            })
+        })
+
+})
+
 module.exports = CompanyRouter
 
