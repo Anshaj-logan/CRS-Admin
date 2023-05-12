@@ -49,13 +49,16 @@ studentRouter.get('/view_student',  async function (req, res) {
         "name": { "$first": "$data.name" },
         "email": { "$first": "$data.email" },
         "phone": { "$first": "$data.contact" },
+        "sslc_score": { "$first": "$data.sslc_score" },
+        "plustwo_score": { "$first": "$data.plustwo_score" },
+        "degree_score": { "$first": "$data.degree_score" },
         "status": { "$first": "$status" },
       }
     }
 
   ])
-  // res.json({data})
-  res.render('mng_std',{data})
+  res.json({data})
+  // res.render('mng_std',{data})
 })
 
 
